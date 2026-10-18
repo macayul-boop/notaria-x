@@ -1,0 +1,72 @@
+package com.duoc.notariax.viewmodel
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.duoc.notariax.model.Usuario
+import com.duoc.notariax.repository.UsuarioRepository
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
+
+class InicioSesionViewModel(private val repository: UsuarioRepository): ViewModel() {
+
+    val emailRegex = Regex("""^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,6}$""")
+
+    var email = MutableStateFlow("")
+    var contrasena = MutableStateFlow("")
+
+    var errorEmail = MutableStateFlow("")
+    var errorContrasena = MutableStateFlow("")
+    var errorLogin = MutableStateFlow("")
+
+    fun limpiarErrorEmail() {errorEmail.value = ""}
+    fun limpiarErrorContrasena() {errorContrasena.value = ""}
+
+    private fun validarEmail(): Boolean {
+        return when {
+            email.value.isBlank() -> {
+                errorEmail.value = "El email es obligatorio"
+                false
+            }
+            !emailRegex.matches(email.value) -> {
+                errorEmail.value = "Formato de email inválido"
+                false
+            }
+            else -> {
+                errorEmail.value = ""
+                true
+            }
+        }
+    }
+
+    private fun validarContrasena(): Boolean {
+        return if (contrasena.value.isBlank()) {
+            errorContrasena.value = "La contraseña es obligatoria"
+            false
+        } else {
+            errorContrasena.value = ""
+            true
+        }
+    }
+
+    fun validarLogin(){
+
+        limpiarErrorEmail()
+        limpiarErrorContrasena()
+
+        val esValidoEmail = validarEmail()
+        val esValidoContrase = validarContrasena()
+
+        if(esValidoEmail && esValidoContrase){
+
+            viewModelScope.launch {
+                val user: Usuario? = repository.login(email.value, contrasena.value)
+                if(user == null){
+                    errorLogin.value = "Email o contraseña incorrecta"
+                }
+            }
+
+        }
+
+    }
+
+}
