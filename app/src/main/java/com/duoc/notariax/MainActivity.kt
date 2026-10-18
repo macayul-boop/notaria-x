@@ -4,22 +4,33 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.room.Room
+import com.duoc.notariax.ui.FormularioUsuari
 import com.duoc.notariax.ui.theme.NotariaXTheme
+import kotlin.getValue
+import com.duoc.notariax.model.AppDatabase
+import com.duoc.notariax.repository.UsuarioRepository
+import com.duoc.notariax.viewmodel.UsuarioViewModel
 
 class MainActivity : ComponentActivity() {
+
+    private val db by lazy {
+        Room.databaseBuilder(
+            applicationContext,
+            AppDatabase::class.java,
+            "usuarios_db"
+        ).build()
+    }
+
+    private val repository by lazy { UsuarioRepository(db.usuarioDao()) }
+    private val viewModelUsuario by lazy { UsuarioViewModel(repository) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             NotariaXTheme {
-                Text(text = "Hola Mundo")
+                FormularioUsuari(viewModelUsuario)
             }
         }
     }
