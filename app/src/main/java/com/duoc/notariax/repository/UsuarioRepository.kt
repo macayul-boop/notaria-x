@@ -7,8 +7,8 @@ import kotlin.text.insert
 class UsuarioRepository(private val dao: UsuarioDao) {
 
     suspend fun getAll() = dao.getAll()
-    suspend fun insert(usuario: Usuario) = dao.insert(usuario)
-    suspend fun update(usuario: Usuario) = dao.update(usuario)
-    suspend fun delete(usuario: Usuario) = dao.delete(usuario)
+    suspend fun insert(usuario: Usuario): Unit = dao.insert(usuario)
+    suspend fun update(usuario: Usuario): Int = dao.update(usuario)
+    suspend fun delete(usuario: Usuario): Int = dao.delete(usuario)
 
 }

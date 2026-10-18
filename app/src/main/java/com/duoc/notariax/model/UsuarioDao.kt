@@ -13,12 +13,12 @@ interface UsuarioDao {
     suspend fun getAll(): List<Usuario>
 
     @Insert
-    suspend fun insert(usuario: Usuario)
+    suspend fun insert(usuario: Usuario): Unit
 
     @Update
-    suspend fun update(usuario: Usuario)
+    suspend fun update(usuario: Usuario): Int
 
     @Delete
-    suspend fun delete(usuario: Usuario)
+    suspend fun delete(usuario: Usuario): Int
 
 }
