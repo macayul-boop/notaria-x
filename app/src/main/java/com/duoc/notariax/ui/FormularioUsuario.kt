@@ -1,5 +1,6 @@
 package com.duoc.notariax.ui
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,7 +21,9 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -36,16 +39,22 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.duoc.notariax.model.Usuario
+import com.duoc.notariax.ui.theme.cafeOscuro
+import com.duoc.notariax.ui.theme.mostaza
 import com.duoc.notariax.viewmodel.UsuarioViewModel
 
 @Composable
-fun FormularioUsuari(viewModel: UsuarioViewModel){
+fun FormularioUsuari(
+    viewModel: UsuarioViewModel,
+    onIrInicioSesion: () -> Unit
+){
 
     val nombreCompleto by viewModel.nombreCompleto.collectAsState()
     val rut by viewModel.rut.collectAsState()
     val email by viewModel.email.collectAsState()
     val contrasena by viewModel.contrasena.collectAsState()
     val contrasenaRepetida by viewModel.contrasenaRepetida.collectAsState()
+    val registroExito by viewModel.registroExito.collectAsState()
 
     val errorNombre by viewModel.errorNombre.collectAsState()
     val errorRut by viewModel.errorRut.collectAsState()
@@ -56,9 +65,14 @@ fun FormularioUsuari(viewModel: UsuarioViewModel){
     var estaVisibleContrasena by remember { mutableStateOf(false) }
     var estaVisibleContrasenaRepetida by remember { mutableStateOf(false) }
 
+    LaunchedEffect(registroExito) {
+        if (registroExito) {
+            onIrInicioSesion()
+        }
+    }
 
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize().background(cafeOscuro),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -72,7 +86,8 @@ fun FormularioUsuari(viewModel: UsuarioViewModel){
             Text(
                 text = "Crear cuenta",
                 fontSize = 28.sp,
-                fontWeight = FontWeight.SemiBold
+                fontWeight = FontWeight.SemiBold,
+                color = mostaza
             )
         }
 
@@ -89,7 +104,6 @@ fun FormularioUsuari(viewModel: UsuarioViewModel){
             },
             label = { Text("Nombre Completo") },
             isError = errorNombre.isNotEmpty(),
-
             supportingText = {
                 if (errorNombre.isNotEmpty()) {
                     Text(
@@ -100,7 +114,15 @@ fun FormularioUsuari(viewModel: UsuarioViewModel){
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 55.dp)
+                .padding(horizontal = 55.dp),
+            colors = TextFieldDefaults.colors(
+                focusedIndicatorColor = mostaza,
+                unfocusedIndicatorColor = mostaza,
+                focusedLabelColor = mostaza,
+                unfocusedLabelColor = mostaza,
+                focusedContainerColor = Color.Transparent,
+                unfocusedContainerColor = Color.Transparent
+            )
         )
 
         // Input de Rut
@@ -125,7 +147,15 @@ fun FormularioUsuari(viewModel: UsuarioViewModel){
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 55.dp)
+                .padding(horizontal = 55.dp),
+            colors = TextFieldDefaults.colors(
+                focusedIndicatorColor = mostaza,
+                unfocusedIndicatorColor = mostaza,
+                focusedLabelColor = mostaza,
+                unfocusedLabelColor = mostaza,
+                focusedContainerColor = Color.Transparent,
+                unfocusedContainerColor = Color.Transparent
+            )
         )
 
         // Input de email
@@ -150,7 +180,15 @@ fun FormularioUsuari(viewModel: UsuarioViewModel){
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 55.dp)
+                .padding(horizontal = 55.dp),
+            colors = TextFieldDefaults.colors(
+                focusedIndicatorColor = mostaza,
+                unfocusedIndicatorColor = mostaza,
+                focusedLabelColor = mostaza,
+                unfocusedLabelColor = mostaza,
+                focusedContainerColor = Color.Transparent,
+                unfocusedContainerColor = Color.Transparent
+            )
         )
 
         // Input de contraseña
@@ -185,7 +223,15 @@ fun FormularioUsuari(viewModel: UsuarioViewModel){
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 55.dp)
+                .padding(horizontal = 55.dp),
+            colors = TextFieldDefaults.colors(
+                focusedIndicatorColor = mostaza,
+                unfocusedIndicatorColor = mostaza,
+                focusedLabelColor = mostaza,
+                unfocusedLabelColor = mostaza,
+                focusedContainerColor = Color.Transparent,
+                unfocusedContainerColor = Color.Transparent
+            )
         )
 
         // Input repetir contraseña
@@ -220,18 +266,26 @@ fun FormularioUsuari(viewModel: UsuarioViewModel){
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 55.dp)
+                .padding(horizontal = 55.dp),
+            colors = TextFieldDefaults.colors(
+                focusedIndicatorColor = mostaza,
+                unfocusedIndicatorColor = mostaza,
+                focusedLabelColor = mostaza,
+                unfocusedLabelColor = mostaza,
+                focusedContainerColor = Color.Transparent,
+                unfocusedContainerColor = Color.Transparent
+            )
         )
 
         Spacer(modifier = Modifier.height(25.dp))
 
         Button(
             onClick = {
-                viewModel.crearUsuario(Usuario(nombreCompleto = nombreCompleto, rut = rut, email = email, contrasena = contrasena,))
+                    viewModel.crearUsuario(Usuario(nombreCompleto = nombreCompleto, rut = rut, email = email, contrasena = contrasena))
             },
             // Colores
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color.Gray,
+                containerColor = mostaza,
                 contentColor = Color.White
             ),
             // Border radius

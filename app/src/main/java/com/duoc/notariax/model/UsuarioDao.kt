@@ -12,6 +12,9 @@ interface UsuarioDao {
     @Query("SELECT * FROM usuarios")
     suspend fun getAll(): List<Usuario>
 
+    @Query("SELECT * FROM usuarios WHERE email = :email AND contrasena = :contrasena")
+    suspend fun login(email: String, contrasena: String): Usuario?
+
     @Insert
     suspend fun insert(usuario: Usuario): Unit
 
