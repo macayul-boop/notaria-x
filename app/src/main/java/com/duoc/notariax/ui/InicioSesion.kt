@@ -1,6 +1,10 @@
 package com.duoc.notariax.ui
 
+import androidx.compose.foundation.BorderStroke
+import com.duoc.notariax.ui.theme.mostaza
+import com.duoc.notariax.ui.theme.cafeOscuro
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -18,9 +22,12 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -39,10 +46,15 @@ import com.duoc.notariax.model.Usuario
 import com.duoc.notariax.viewmodel.InicioSesionViewModel
 
 @Composable
-fun InicioSesion(viewModel: InicioSesionViewModel){
+fun InicioSesion(
+    viewModel: InicioSesionViewModel,
+    onIrRegistro: () -> Unit,
+    onIrInicio: () -> Unit
+){
 
     val email by viewModel.email.collectAsState()
     val contrasena by viewModel.contrasena.collectAsState()
+    val loginExito by viewModel.exitoLogin.collectAsState()
 
     val errorEmail by viewModel.errorEmail.collectAsState()
     val errorContrasena by viewModel.errorContrasena.collectAsState()
@@ -50,8 +62,15 @@ fun InicioSesion(viewModel: InicioSesionViewModel){
 
     var estaVisibleContrasena by remember { mutableStateOf(false) }
 
+    LaunchedEffect(loginExito) {
+        if (loginExito) {
+            onIrInicio()
+            viewModel.exitoLogin.value = false;
+        }
+    }
+
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize().background(cafeOscuro),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ){
@@ -84,7 +103,15 @@ fun InicioSesion(viewModel: InicioSesionViewModel){
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 55.dp)
+                .padding(horizontal = 55.dp),
+            colors = TextFieldDefaults.colors(
+                focusedIndicatorColor = mostaza,
+                unfocusedIndicatorColor = mostaza,
+                focusedLabelColor = mostaza,
+                unfocusedLabelColor = mostaza,
+                focusedContainerColor = Color.Transparent,
+                unfocusedContainerColor = Color.Transparent
+            )
         )
 
         OutlinedTextField(
@@ -118,7 +145,15 @@ fun InicioSesion(viewModel: InicioSesionViewModel){
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 55.dp)
+                .padding(horizontal = 55.dp),
+            colors = TextFieldDefaults.colors(
+                focusedIndicatorColor = mostaza,
+                unfocusedIndicatorColor = mostaza,
+                focusedLabelColor = mostaza,
+                unfocusedLabelColor = mostaza,
+                focusedContainerColor = Color.Transparent,
+                unfocusedContainerColor = Color.Transparent
+            )
         )
 
         Text(text = errorLogin)
@@ -130,7 +165,7 @@ fun InicioSesion(viewModel: InicioSesionViewModel){
             },
             // Colores
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color.Gray,
+                containerColor = mostaza,
                 contentColor = Color.White
             ),
             // Border radius
@@ -143,6 +178,22 @@ fun InicioSesion(viewModel: InicioSesionViewModel){
         ) {
             Text("Iniciar Sesion")
         }
+
+        Spacer(modifier = Modifier.height(15.dp))
+
+        OutlinedButton(
+            onClick = {onIrRegistro()},
+            border = BorderStroke(2.dp, mostaza),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color.Transparent,
+                contentColor = mostaza
+            ),
+            shape = RoundedCornerShape(8.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(height = 50.dp)
+                .padding(horizontal = 55.dp)
+        ){ Text(text = "Registrarse") }
     }
 
 }

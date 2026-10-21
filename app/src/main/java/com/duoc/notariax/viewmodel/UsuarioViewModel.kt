@@ -20,6 +20,7 @@ class UsuarioViewModel (private val repository: UsuarioRepository) : ViewModel()
     var email = MutableStateFlow("")
     var contrasena = MutableStateFlow("")
     var contrasenaRepetida = MutableStateFlow("")
+    var registroExito = MutableStateFlow(false)
 
     // Mensajes de error
     var errorNombre = MutableStateFlow("")
@@ -132,6 +133,7 @@ class UsuarioViewModel (private val repository: UsuarioRepository) : ViewModel()
                 esValidoContrasena && esValidoContrasenaRepetida
 
         if (esFormularioValido) {
+            registroExito.value = true
             viewModelScope.launch {
                 repository.insert(usuario)
                 limpiarInputs()

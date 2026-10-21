@@ -47,6 +47,8 @@ dependencies {
 
     implementation("androidx.room:room-runtime:2.7.0-alpha01")
     implementation("androidx.room:room-ktx:2.7.0-alpha01")
+    implementation(libs.androidx.material3)
+    implementation(libs.androidx.navigation.compose)
     ksp("androidx.room:room-compiler:2.7.0-alpha01")
 
     implementation("androidx.compose.material:material-icons-extended")
