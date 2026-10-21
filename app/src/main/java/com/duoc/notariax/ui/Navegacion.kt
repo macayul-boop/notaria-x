@@ -20,11 +20,11 @@ fun Navegacion(
     val viewModelInicioSesion by lazy { InicioSesionViewModel(repository, sessionManager) }
 
     val usuarioLogueado = sessionManager.obtenerIdSesion() != null
-    val rutaInicial = if(usuarioLogueado) "inicio" else "login"
+    //val rutaInicial = if(usuarioLogueado) "inicio" else "login"
 
     NavHost(
         navController = navController,
-        startDestination = rutaInicial
+        startDestination = "seleccionar_tramite"
     ) {
         // Pantalla de inicio
         composable("inicio"){
@@ -56,6 +56,13 @@ fun Navegacion(
                 onIrInicioSesion = {
                     navController.navigate("login")
                 }
+            )
+        }
+
+        // Pantalla de seleccionar tramite
+        composable("seleccionar_tramite"){
+            SeleccionarTramite(
+                navController
             )
         }
 
