@@ -29,5 +29,8 @@ class TramiteRepository {
         return listaTramite
     }
 
+    fun obtenerTramitePorId(idTramite: Int): Tramite? {
+        return listaTramite.find { it.id == idTramite }
+    }
 
 }
