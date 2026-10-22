@@ -11,8 +11,7 @@ import kotlinx.coroutines.launch
 
 class UsuarioViewModel (private val repository: UsuarioRepository) : ViewModel() {
     // Expresiones regualres
-    val rutRegex = Regex("""^\d{1,2}\.\d{3}\.\d{3}-[\dkK]$""")
-    val emailRegex = Regex("""^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,6}$""")
+
 
     // Variables
     var nombreCompleto = MutableStateFlow("")
@@ -50,18 +49,18 @@ class UsuarioViewModel (private val repository: UsuarioRepository) : ViewModel()
     fun limpiarErrorContrasena() { errorContrasena.value = "" }
     fun limpiarErrorContrasenaRepetida() { errorContrasenaRepetida.value = "" }
 
-    private fun validarNombre(): Boolean {
-        return if (nombreCompleto.value.isBlank()) {
+    private fun validarNombre(): Boolean{
+        if (repository.validarNombre(nombreCompleto.value)){
             errorNombre.value = "El nombre es obligatorio"
-            false
-        } else {
+            return false
+        }else{
             errorNombre.value = ""
-            true
+            return true
         }
     }
 
     private fun validarRut(): Boolean {
-        return when {
+        /*return when {
             rut.value.isBlank() -> {
                 errorRut.value = "El RUT es obligatorio"
                 false
@@ -74,11 +73,22 @@ class UsuarioViewModel (private val repository: UsuarioRepository) : ViewModel()
                 errorRut.value = ""
                 true
             }
+        }*/
+
+        if(repository.validarVacioRut(rut.value)){
+            errorRut.value = "El RUT es obligatorio"
+            return false
+        }else if(repository.validarFormatoRut(rut.value)){
+            errorRut.value = "Formato inválido (ej: 12.345.678-k)"
+            return false
+        }else{
+            errorRut.value = ""
+            return true
         }
     }
 
     private fun validarEmail(): Boolean {
-        return when {
+        /*return when {
             email.value.isBlank() -> {
                 errorEmail.value = "El email es obligatorio"
                 false
@@ -91,21 +101,40 @@ class UsuarioViewModel (private val repository: UsuarioRepository) : ViewModel()
                 errorEmail.value = ""
                 true
             }
+        }*/
+
+        if(repository.validarVacioEmail(email.value)){
+            errorEmail.value = "El email es obligatorio"
+            return false
+        }else if(repository.validarFormatoEmail(email.value)){
+            errorEmail.value = "Formato de email inválido"
+            return false
+        }else{
+            errorEmail.value = ""
+            return true
         }
     }
 
     private fun validarContrasena(): Boolean {
-        return if (contrasena.value.isBlank()) {
+        /*return if (contrasena.value.isBlank()) {
             errorContrasena.value = "La contraseña es obligatoria"
             false
         } else {
             errorContrasena.value = ""
             true
+        }*/
+
+        if(repository.validarVacioContrasena(contrasena.value)){
+            errorContrasena.value = "La contraseña es obligatoria"
+            return false
+        }else{
+            errorContrasena.value = ""
+            return true
         }
     }
 
     private fun validarContrasenaRepetida(): Boolean {
-        return when {
+        /*return when {
             contrasenaRepetida.value.isBlank() -> {
                 errorContrasenaRepetida.value = "Repetir la contraseña es obligatorio"
                 false
@@ -118,6 +147,17 @@ class UsuarioViewModel (private val repository: UsuarioRepository) : ViewModel()
                 errorContrasenaRepetida.value = ""
                 true
             }
+        }*/
+
+        if(repository.validarVacionContrasenaRepetida(contrasenaRepetida.value)){
+            errorContrasenaRepetida.value = "Repetir la contraseña es obligatorio"
+            return false
+        }else if(repository.validarCoincidenciaContrasena(contrasena.value, contrasenaRepetida.value)){
+            errorContrasenaRepetida.value = "Las contraseñas no coinciden"
+            return false
+        }else{
+            errorContrasenaRepetida.value = ""
+            return true
         }
     }
 
