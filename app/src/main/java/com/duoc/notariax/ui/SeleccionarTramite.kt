@@ -136,7 +136,7 @@ fun SeleccionarTramite(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(height = 50.dp)
-        ) { Text(text = "Boton") }
+        ) { Text(text = "Continuar") }
 
     }
 
