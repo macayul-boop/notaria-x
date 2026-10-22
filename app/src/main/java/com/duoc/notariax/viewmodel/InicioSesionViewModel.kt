@@ -28,7 +28,7 @@ class InicioSesionViewModel(
     fun limpiarErrorLogin() {errorLogin.value = ""}
 
     private fun validarEmail(): Boolean {
-        return when {
+        /*return when {
             email.value.isBlank() -> {
                 errorEmail.value = "El email es obligatorio"
                 false
@@ -41,17 +41,37 @@ class InicioSesionViewModel(
                 errorEmail.value = ""
                 true
             }
+        }*/
+
+        if(repository.validarVacioEmail(email.value)){
+            errorEmail.value = "El email es obligatorio"
+            return false
+        }else if(repository.validarFormatoEmail(email.value)){
+            errorEmail.value = "Formato de email inválido"
+            return false
+        }else{
+            errorEmail.value = ""
+            return true
         }
     }
 
     private fun validarContrasena(): Boolean {
-        return if (contrasena.value.isBlank()) {
+        /*return if (contrasena.value.isBlank()) {
             errorContrasena.value = "La contraseña es obligatoria"
             false
         } else {
             errorContrasena.value = ""
             true
+        }*/
+
+        if(repository.validarVacioContrasena(contrasena.value)){
+            errorContrasena.value = "La contraseña es obligatoria"
+            return false
+        }else{
+            errorContrasena.value = ""
+            return true
         }
+
     }
 
     fun validarLogin(){
