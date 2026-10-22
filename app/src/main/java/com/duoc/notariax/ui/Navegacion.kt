@@ -1,12 +1,15 @@
 package com.duoc.notariax.ui
 
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.duoc.notariax.repository.UsuarioRepository
 import com.duoc.notariax.utils.SessionManager
 import com.duoc.notariax.viewmodel.InicioSesionViewModel
+import com.duoc.notariax.viewmodel.SeleccionarTramiteViewModel
 import com.duoc.notariax.viewmodel.UsuarioViewModel
 
 @Composable
@@ -18,6 +21,7 @@ fun Navegacion(
 
     val viewModelUsuario by lazy { UsuarioViewModel(repository) }
     val viewModelInicioSesion by lazy { InicioSesionViewModel(repository, sessionManager) }
+    val viewModelSeleccionarTramite by lazy { SeleccionarTramiteViewModel() }
 
     val usuarioLogueado = sessionManager.obtenerIdSesion() != null
     //val rutaInicial = if(usuarioLogueado) "inicio" else "login"
@@ -62,8 +66,24 @@ fun Navegacion(
         // Pantalla de seleccionar tramite
         composable("seleccionar_tramite"){
             SeleccionarTramite(
-                navController
+                onContinuar = {tramiteId ->
+                    navController.navigate("detalle_tramite/$tramiteId")
+                },
+                onRegresar = {
+                    navController.navigate("inicio")
+                },
+                viewModelSeleccionarTramite
             )
+        }
+
+        // Pantalla detalles tramite
+        composable(
+            route = "detalle_tramite/{tramiteId}",
+            arguments = listOf(
+                navArgument("tramiteId") { type = NavType.StringType }
+            )
+        ) {
+
         }
 
 
