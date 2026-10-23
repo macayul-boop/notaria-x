@@ -43,7 +43,7 @@ class InicioViewModel(
     }
 
     private fun obtenerTramites(){
-        _listaTramitesProgreso.value = repositoryProgresoTramite.obtenerProgesoConTramite(2)
+        _listaTramitesProgreso.value = repositoryProgresoTramite.obtenerVariosProgesoConTramite(2)
     }
 
 

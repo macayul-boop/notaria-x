@@ -31,7 +31,7 @@ class ProgresoTramiteRepository(){
         )
     )
 
-    fun obtenerProgesoConTramite(limite: Int = 0): List<ProgresoConTramite>{
+    fun obtenerVariosProgesoConTramite(limite: Int = 0): List<ProgresoConTramite>{
 
         val listaProgresoConTramite = mutableListOf<ProgresoConTramite>()
 
@@ -55,6 +55,18 @@ class ProgresoTramiteRepository(){
         }
 
         return listaProgresoConTramite
+    }
+
+    fun obtenerProgresoConTramite(idProgreso: Int): ProgresoConTramite? {
+        val progresoTramite: ProgresoTramite? = listaProgesoTramite.find { it.id == idProgreso }
+
+        if(progresoTramite == null){ return null }
+
+        val tramite: Tramite? = repositoryTramite.obtenerTramitePorId(progresoTramite.idTramite)
+
+        if(tramite == null){ return null }
+
+        return ProgresoConTramite(tramite, progresoTramite);
     }
 
 }
