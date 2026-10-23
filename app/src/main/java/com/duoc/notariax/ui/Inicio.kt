@@ -1,5 +1,6 @@
 package com.duoc.notariax.ui
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -7,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -21,6 +23,8 @@ import androidx.compose.material.icons.filled.Folder
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,6 +36,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.graphics.translationMatrix
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.duoc.notariax.ui.theme.cafeOscuro
@@ -47,6 +52,7 @@ fun Inicio(
 ){
 
     val nombreUsuario by viewModel.nombreUsuario.collectAsState()
+    val listaTramite by viewModel.listaTramitesProgreso.collectAsState()
 
     Column(
         modifier = Modifier
@@ -158,16 +164,88 @@ fun Inicio(
 
         }
 
+        Spacer(modifier = Modifier.height(30.dp))
+
+        Text(text = "Ultimos tramites", color = mostaza, fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
+
         Spacer(modifier = Modifier.height(20.dp))
 
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)
-                .background(color = cafeOscuroClaro, shape = RoundedCornerShape(16.dp)),
-
         ) {
 
+            Column() {
+                listaTramite.forEach { tramite ->
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(200.dp),
+                        shape = RoundedCornerShape(16.dp),
+                        colors = CardDefaults.cardColors(containerColor = cafeOscuroClaro)
+                    ) {
+                        Column(
+                            modifier = Modifier.fillMaxSize()
+                                .padding(horizontal = 25.dp, vertical = 25.dp),
+                        ) {
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .weight(0.7f)
+                            ) {
+                                Row() {
+                                    Text(
+                                        text = tramite.tramite.nombre,
+                                        fontSize = 15.sp,
+                                        fontWeight = FontWeight.SemiBold,
+                                        color = mostaza
+                                    )
+                                    Spacer(modifier = Modifier.width(15.dp))
+                                    Text(
+                                        text = tramite.progresoTramite.fechaFormateada,
+                                        fontSize = 15.sp,
+                                        fontWeight = FontWeight.Thin,
+                                        color = mostaza
+                                    )
+                                }
+                                Spacer(modifier = Modifier.height(10.dp))
+                                Text(
+                                    text = tramite.progresoTramite.estado.nombreDisplay,
+                                    color = Color.White,
+                                    modifier = Modifier
+                                        .background(
+                                            color = cafeOscuro,
+                                            shape = RoundedCornerShape(8.dp)
+                                        )
+                                        .padding(horizontal = 16.dp, vertical = 8.dp)
+                                )
+                            }
+
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .weight(0.3f)
+                            ) {
+                                Button(
+                                    onClick = {},
+                                    colors = ButtonDefaults.buttonColors(
+                                        containerColor = mostaza,
+                                        contentColor = Color.White
+                                    ),
+                                    shape = RoundedCornerShape(8.dp),
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                ) {
+                                    Text(text = "Ver detalles")
+                                }
+                            }
+
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(20.dp))
+                }
+            }
         }
 
         Button(onClick = {onCerrarSesion()}) {

@@ -25,7 +25,7 @@ fun Navegacion(
     val viewModelUsuario by lazy { UsuarioViewModel(repository) }
     val viewModelInicioSesion by lazy { InicioSesionViewModel(repository, sessionManager) }
     val viewModelSeleccionarTramite by lazy { SeleccionarTramiteViewModel() }
-    val viewModelInicio by lazy { InicioViewModel(repository, sessionManager) }
+    val viewModelInicio by lazy { InicioViewModel(repository,sessionManager) }
 
     val usuarioLogueado = sessionManager.obtenerIdSesion() != null
     val rutaInicial = if(usuarioLogueado) "inicio" else "login"
