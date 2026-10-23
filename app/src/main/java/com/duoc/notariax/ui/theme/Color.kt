@@ -12,3 +12,4 @@ val Pink40 = Color(0xFF7D5260)
 
 val mostaza = Color(0xFFC09849)
 val cafeOscuro = Color(0xFF181513)
+val cafeOscuroClaro = Color(0xFF231F1C)
