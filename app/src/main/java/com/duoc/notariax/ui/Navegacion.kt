@@ -103,7 +103,21 @@ fun Navegacion(
             )
         }
 
+        // Pantalla de tramites
+        composable(
+            "tramites"
+        ){
+            Tramites(
+                onContinuar = {progresoTramiteId ->
+                    navController.navigate("progreso_tramite/$progresoTramiteId")
+                },
+                onRegresar = {
+                    navController.navigate("inicio")
+                },
+            )
+        }
 
+        // Pantalla de progreso tramite
     }
 
 }

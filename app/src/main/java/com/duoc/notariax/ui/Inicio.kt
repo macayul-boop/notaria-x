@@ -110,7 +110,7 @@ fun Inicio(
 
             Column() {
                 Button(
-                    onClick = { },
+                    onClick = { navegacion.navigate("tramites") },
                     shape = CircleShape,
                     modifier = Modifier.size(64.dp),
                     contentPadding = PaddingValues(0.dp),
@@ -138,7 +138,7 @@ fun Inicio(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Button(
-                    onClick = { },
+                    onClick = {  },
                     shape = CircleShape,
                     modifier = Modifier.size(64.dp),
                     contentPadding = PaddingValues(0.dp),
@@ -149,7 +149,7 @@ fun Inicio(
                 ){
                     Icon(
                         imageVector = Icons.Default.Person,
-                        contentDescription = "Carpeta"
+                        contentDescription = "Usuario"
                     )
                 }
 
