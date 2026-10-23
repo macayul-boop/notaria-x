@@ -13,6 +13,7 @@ import com.duoc.notariax.viewmodel.DetalleTramiteViewModel
 import com.duoc.notariax.viewmodel.InicioSesionViewModel
 import com.duoc.notariax.viewmodel.InicioViewModel
 import com.duoc.notariax.viewmodel.SeleccionarTramiteViewModel
+import com.duoc.notariax.viewmodel.TramitesViewModel
 import com.duoc.notariax.viewmodel.UsuarioViewModel
 
 @Composable
@@ -26,6 +27,7 @@ fun Navegacion(
     val viewModelInicioSesion by lazy { InicioSesionViewModel(repository, sessionManager) }
     val viewModelSeleccionarTramite by lazy { SeleccionarTramiteViewModel() }
     val viewModelInicio by lazy { InicioViewModel(repository,sessionManager) }
+    val viewModelTramites by lazy { TramitesViewModel() }
 
     val usuarioLogueado = sessionManager.obtenerIdSesion() != null
     val rutaInicial = if(usuarioLogueado) "inicio" else "login"
@@ -114,6 +116,7 @@ fun Navegacion(
                 onRegresar = {
                     navController.navigate("inicio")
                 },
+                viewModelTramites
             )
         }
 
