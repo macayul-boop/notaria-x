@@ -13,6 +13,7 @@ class UsuarioRepository(private val dao: UsuarioDao) {
 
     suspend fun getAll() = dao.getAll()
     suspend fun login(email: String, contrasena: String): Usuario? = dao.login(email, contrasena)
+    suspend fun getUsuario(id: Int): Usuario? = dao.getUsuario(id)
     suspend fun insert(usuario: Usuario): Unit = dao.insert(usuario)
     suspend fun update(usuario: Usuario): Int = dao.update(usuario)
     suspend fun delete(usuario: Usuario): Int = dao.delete(usuario)
