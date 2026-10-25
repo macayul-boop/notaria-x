@@ -8,7 +8,8 @@ class ProgresoTramite(
     val id: Int,
     val idTramite: Int,
     var estado: EstadoTramite = EstadoTramite.Abierto,
-    val fechaCreacion: Date
+    val fechaCreacion: Date,
+    val historial: List<EventoHistorial> = emptyList()
 ) {
 
     val fechaFormateada: String get() {
