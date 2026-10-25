@@ -12,7 +12,7 @@ class TramitesViewModel(): ViewModel() {
 
     private val repositoryTramites = ProgresoTramiteRepository()
 
-    private val _listaTramites = MutableStateFlow<List<ProgresoConTramite>>(repositoryTramites.obtenerProgesoConTramite())
+    private val _listaTramites = MutableStateFlow<List<ProgresoConTramite>>(repositoryTramites.obtenerVariosProgesoConTramite())
     val listaTramites: StateFlow<List<ProgresoConTramite>> = _listaTramites.asStateFlow()
 
 

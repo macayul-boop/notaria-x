@@ -12,6 +12,7 @@ import com.duoc.notariax.utils.SessionManager
 import com.duoc.notariax.viewmodel.DetalleTramiteViewModel
 import com.duoc.notariax.viewmodel.InicioSesionViewModel
 import com.duoc.notariax.viewmodel.InicioViewModel
+import com.duoc.notariax.viewmodel.ProgresoTramiteViewModel
 import com.duoc.notariax.viewmodel.SeleccionarTramiteViewModel
 import com.duoc.notariax.viewmodel.TramitesViewModel
 import com.duoc.notariax.viewmodel.UsuarioViewModel
@@ -110,9 +111,7 @@ fun Navegacion(
             "tramites"
         ){
             Tramites(
-                onContinuar = {progresoTramiteId ->
-                    navController.navigate("progreso_tramite/$progresoTramiteId")
-                },
+                navController,
                 onRegresar = {
                     navController.navigate("inicio")
                 },
@@ -121,6 +120,23 @@ fun Navegacion(
         }
 
         // Pantalla de progreso tramite
+        composable(
+            "progreso_tramite/{progresoTramiteId}",
+            arguments = listOf(
+                navArgument("progresoTramiteId") { type = NavType.StringType }
+            )
+        ){
+
+            val viewModel: ProgresoTramiteViewModel = viewModel()
+
+            ProgresoTramite(
+                viewModel,
+                onRegresar = {
+                    navController.navigate("tramites")
+                }
+            )
+
+        }
     }
 
 }

@@ -228,7 +228,7 @@ fun Inicio(
                                     .weight(0.3f)
                             ) {
                                 Button(
-                                    onClick = {},
+                                    onClick = {navegacion.navigate("progreso_tramite/${tramite.progresoTramite.id}")},
                                     colors = ButtonDefaults.buttonColors(
                                         containerColor = mostaza,
                                         contentColor = Color.White

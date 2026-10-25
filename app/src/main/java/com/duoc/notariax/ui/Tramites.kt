@@ -42,7 +42,7 @@ import com.duoc.notariax.viewmodel.TramitesViewModel
 
 @Composable
 fun Tramites(
-    onContinuar: (String) -> Unit,
+    nagevacion: NavController,
     onRegresar: () -> Unit,
     viewmodel: TramitesViewModel
 ){
@@ -133,7 +133,7 @@ fun Tramites(
                                 .weight(0.3f)
                         ) {
                             Button(
-                                onClick = {},
+                                onClick = {nagevacion.navigate("progreso_tramite/${tramite.progresoTramite.id}")},
                                 colors = ButtonDefaults.buttonColors(
                                     containerColor = mostaza,
                                     contentColor = Color.White
