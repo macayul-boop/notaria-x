@@ -31,7 +31,7 @@ class PerfilViewModel(
         obtenerUsuario()
     }
 
-    private fun obtenerUsuario(){
+    fun obtenerUsuario(){
         viewModelScope.launch {
             if(idUsuario != null) {
                 val resultado = repository.getUsuario(idUsuario.toInt())
