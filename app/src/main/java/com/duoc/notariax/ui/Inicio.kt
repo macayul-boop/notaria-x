@@ -46,7 +46,6 @@ import com.duoc.notariax.viewmodel.InicioViewModel
 
 @Composable
 fun Inicio(
-    onCerrarSesion: () -> Unit,
     navegacion: NavController,
     viewModel: InicioViewModel
 ){
@@ -138,7 +137,7 @@ fun Inicio(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Button(
-                    onClick = {  },
+                    onClick = {  navegacion.navigate("perfil")},
                     shape = CircleShape,
                     modifier = Modifier.size(64.dp),
                     contentPadding = PaddingValues(0.dp),
@@ -247,11 +246,5 @@ fun Inicio(
                 }
             }
         }
-
-        Button(onClick = {onCerrarSesion()}) {
-            Text(text = "Cerrar Sesion")
-        }
     }
-
-
 }
