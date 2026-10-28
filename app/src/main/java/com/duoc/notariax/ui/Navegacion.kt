@@ -13,6 +13,7 @@ import com.duoc.notariax.viewmodel.DetalleTramiteViewModel
 import com.duoc.notariax.viewmodel.InicioSesionViewModel
 import com.duoc.notariax.viewmodel.InicioViewModel
 import com.duoc.notariax.viewmodel.PerfilViewModel
+import com.duoc.notariax.viewmodel.EditarPerfilViewModel
 import com.duoc.notariax.viewmodel.ProgresoTramiteViewModel
 import com.duoc.notariax.viewmodel.SeleccionarTramiteViewModel
 import com.duoc.notariax.viewmodel.TramitesViewModel
@@ -31,6 +32,7 @@ fun Navegacion(
     val viewModelInicio by lazy { InicioViewModel(repository,sessionManager) }
     val viewModelTramites by lazy { TramitesViewModel() }
     val viewModelPerfil by lazy { PerfilViewModel(repository, sessionManager) }
+    val viewModelEditarPerfil by lazy { EditarPerfilViewModel(repository, sessionManager)}
 
     val usuarioLogueado = sessionManager.obtenerIdSesion() != null
     val rutaInicial = if(usuarioLogueado) "inicio" else "login"
@@ -153,6 +155,21 @@ fun Navegacion(
                 viewModelPerfil
                 )
         }
+
+        composable(
+            "editar_perfil"
+        ){
+            EditarPerfil(
+                onRegresar=  {
+                    navController.navigate("perfil")
+                },
+                viewModelEditarPerfil,
+                navController
+
+            )
+        }
+
+
     }
 
 }
