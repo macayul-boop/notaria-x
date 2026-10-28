@@ -20,7 +20,7 @@ class InicioViewModel(
 
     private val repositoryProgresoTramite = ProgresoTramiteRepository()
 
-    private val idUsuario: String? = sessionManager.obtenerIdSesion();
+    private val idUsuario: String? get() = sessionManager.obtenerIdSesion();
     private val _nombreUsuario = MutableStateFlow<String?>("Desconocido/a")
     val nombreUsuario: StateFlow<String?> = _nombreUsuario.asStateFlow()
 
@@ -36,8 +36,11 @@ class InicioViewModel(
     private fun obtenerUsuario(){
         viewModelScope.launch {
             if(idUsuario != null) {
-                val resultado = repository.getUsuario(idUsuario.toInt())
-                _nombreUsuario.value = resultado?.nombreCompleto ?: "Desconocido/a"
+                val idActual = idUsuario
+                if (idActual != null) {
+                    val resultado = repository.getUsuario(idActual.toInt())
+                    _nombreUsuario.value = resultado?.nombreCompleto ?: "Desconocido/a"
+                }
             }
         }
     }
