@@ -2,21 +2,29 @@ package com.duoc.notariax.repository
 
 import com.duoc.notariax.model.Usuario
 import com.duoc.notariax.model.UsuarioDao
+import com.duoc.notariax.model.UsuarioDto
+import com.duoc.notariax.remote.RetrofitInstance
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlin.text.insert
 import kotlin.text.matches
 
-class UsuarioRepository(private val dao: UsuarioDao) {
+class UsuarioRepository() {
 
     val rutRegex = Regex("""^\d{1,2}\.\d{3}\.\d{3}-[\dkK]$""")
     val emailRegex = Regex("""^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,6}$""")
 
-    suspend fun getAll() = dao.getAll()
-    suspend fun login(email: String, contrasena: String): Usuario? = dao.login(email, contrasena)
-    suspend fun getUsuario(id: Int): Usuario? = dao.getUsuario(id)
-    suspend fun insert(usuario: Usuario): Unit = dao.insert(usuario)
-    suspend fun update(usuario: Usuario): Int = dao.update(usuario)
-    suspend fun delete(usuario: Usuario): Int = dao.delete(usuario)
+    // Funciones anteriores ROOM
+    // suspend fun getAll() = dao.getAll()
+    //suspend fun login(email: String, contrasena: String): Usuario? = dao.login(email, contrasena)
+    //suspend fun getUsuario(id: Int): Usuario? = dao.getUsuario(id)
+    //suspend fun insert(usuario: Usuario): Unit = dao.insert(usuario)
+    //suspend fun update(usuario: Usuario): Int = dao.update(usuario)
+    //suspend fun delete(usuario: Usuario): Int = dao.delete(usuario)*
+
+    // Funciones nuevas API
+    suspend fun crearUsuario(usuario: UsuarioDto): UsuarioDto{
+        return RetrofitInstance.api.crearUsuario(usuario)
+    }
 
     // NOMBRE
     fun validarNombre(nombreCompleto: String): Boolean {

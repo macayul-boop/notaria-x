@@ -10,10 +10,12 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class PerfilViewModel(
-    private val repository: UsuarioRepository,
     private val sessionManager: SessionManager
 ): ViewModel() {
-     private val idUsuario: String? = sessionManager.obtenerIdSesion();
+
+    private val repository = UsuarioRepository();
+
+    private val idUsuario: String? = sessionManager.obtenerIdSesion();
     private val _nombreUsuario = MutableStateFlow<String?>("Cargando...")
     private val _rut = MutableStateFlow<String?>("Cargando...")
     private val _email = MutableStateFlow<String?>("Cargando...")
@@ -34,11 +36,11 @@ class PerfilViewModel(
     fun obtenerUsuario(){
         viewModelScope.launch {
             if(idUsuario != null) {
-                val resultado = repository.getUsuario(idUsuario.toInt())
-                _nombreUsuario.value = resultado?.nombreCompleto ?: "Sin nombre"
-                _rut.value = resultado?.rut ?: "Sin RUT"
-                _email.value = resultado?.email ?: "Sin correo"
-                _contraseña.value = resultado?.contrasena ?: "••••••••"
+                //val resultado = repository.getUsuario(idUsuario.toInt())
+                //_nombreUsuario.value = resultado?.nombreCompleto ?: "Sin nombre"
+                //_rut.value = resultado?.rut ?: "Sin RUT"
+                //_email.value = resultado?.email ?: "Sin correo"
+                //_contraseña.value = resultado?.contrasena ?: "••••••••"
             }
         }
     }

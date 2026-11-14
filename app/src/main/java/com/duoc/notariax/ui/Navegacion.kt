@@ -22,17 +22,16 @@ import com.duoc.notariax.viewmodel.UsuarioViewModel
 @Composable
 fun Navegacion(
     sessionManager: SessionManager,
-    repository: UsuarioRepository
 ){
     val navController = rememberNavController()
 
-    val viewModelUsuario by lazy { UsuarioViewModel(repository) }
-    val viewModelInicioSesion by lazy { InicioSesionViewModel(repository, sessionManager) }
+    val viewModelUsuario by lazy { UsuarioViewModel() }
+    val viewModelInicioSesion by lazy { InicioSesionViewModel(sessionManager) }
     val viewModelSeleccionarTramite by lazy { SeleccionarTramiteViewModel() }
-    val viewModelInicio by lazy { InicioViewModel(repository,sessionManager) }
+    val viewModelInicio by lazy { InicioViewModel(sessionManager) }
     val viewModelTramites by lazy { TramitesViewModel() }
-    val viewModelPerfil by lazy { PerfilViewModel(repository, sessionManager) }
-    val viewModelEditarPerfil by lazy { EditarPerfilViewModel(repository, sessionManager)}
+    val viewModelPerfil by lazy { PerfilViewModel(sessionManager) }
+    val viewModelEditarPerfil by lazy { EditarPerfilViewModel(sessionManager)}
 
     val usuarioLogueado = sessionManager.obtenerIdSesion() != null
     val rutaInicial = if(usuarioLogueado) "inicio" else "login"

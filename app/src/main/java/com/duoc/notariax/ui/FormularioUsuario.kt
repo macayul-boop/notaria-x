@@ -38,7 +38,9 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.duoc.notariax.model.TipoUsuario
 import com.duoc.notariax.model.Usuario
+import com.duoc.notariax.model.UsuarioDto
 import com.duoc.notariax.ui.theme.cafeOscuro
 import com.duoc.notariax.ui.theme.mostaza
 import com.duoc.notariax.viewmodel.UsuarioViewModel
@@ -281,7 +283,7 @@ fun FormularioUsuari(
 
         Button(
             onClick = {
-                    viewModel.crearUsuario(Usuario(nombreCompleto = nombreCompleto, rut = rut, email = email, contrasena = contrasena))
+                    viewModel.crearUsuario(UsuarioDto(nombre = nombreCompleto, rut = rut, email = email, contrasena = contrasena, tipo_usuario = TipoUsuario.cliente))
             },
             // Colores
             colors = ButtonDefaults.buttonColors(

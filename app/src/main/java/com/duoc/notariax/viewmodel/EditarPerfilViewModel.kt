@@ -11,10 +11,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class EditarPerfilViewModel (
-    private val repository: UsuarioRepository,
     private val sessionManager: SessionManager
-) : ViewModel(){
+) : ViewModel() {
 
+    private val repository = UsuarioRepository();
     private val idUsuario: String? = sessionManager.obtenerIdSesion();
     private val _nombreCompleto = MutableStateFlow("")
     private val _rut = MutableStateFlow("")
@@ -95,17 +95,17 @@ class EditarPerfilViewModel (
     fun obtenerUsuario(){
         viewModelScope.launch {
             if(idUsuario != null) {
-                val resultado = repository.getUsuario(idUsuario.toInt())
-                if(resultado !=null) {
-                    _nombreCompleto.value = resultado.nombreCompleto
-                    _rut.value = resultado.rut
-                    _email.value = resultado.email
-                    _contrasena.value = resultado.contrasena
-                    _contrasenaRepetida.value=resultado.contrasena
+                //val resultado = repository.getUsuario(idUsuario.toInt())
+                //if(resultado !=null) {
+                //    _nombreCompleto.value = resultado.nombreCompleto
+                //    _rut.value = resultado.rut
+                //    _email.value = resultado.email
+                //    _contrasena.value = resultado.contrasena
+                //    _contrasenaRepetida.value=resultado.contrasena
                 }
             }
         }
-    }
+
 
     private fun validarNombre(): Boolean{
         return if (repository.validarNombre(_nombreCompleto.value)){
@@ -189,7 +189,7 @@ class EditarPerfilViewModel (
                     email = _email.value,
                     contrasena = _contrasena.value
                 )
-                repository.update(usuarioEditado)
+                //repository.update(usuarioEditado)
                 edicionExito.value=true
             }
         }

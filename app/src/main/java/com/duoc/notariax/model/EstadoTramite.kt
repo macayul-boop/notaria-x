@@ -11,7 +11,4 @@ sealed class EstadoTramite {
         override val nombreDisplay: String = "Finalizado"
     }
 
-    object Cancelado : EstadoTramite() {
-        override val nombreDisplay: String = "Cancelado"
-    }
 }

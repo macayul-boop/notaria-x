@@ -14,7 +14,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class InicioViewModel(
-    private val repository: UsuarioRepository,
     private val sessionManager: SessionManager
 ): ViewModel() {
 
@@ -38,8 +37,8 @@ class InicioViewModel(
             if(idUsuario != null) {
                 val idActual = idUsuario
                 if (idActual != null) {
-                    val resultado = repository.getUsuario(idActual.toInt())
-                    _nombreUsuario.value = resultado?.nombreCompleto ?: "Desconocido/a"
+                    //val resultado = repository.getUsuario(idActual.toInt())
+                    //_nombreUsuario.value = resultado?.nombreCompleto ?: "Desconocido/a"
                 }
             }
         }

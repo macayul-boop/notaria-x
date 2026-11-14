@@ -3,15 +3,15 @@ package com.duoc.notariax.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.duoc.notariax.model.Usuario
+import com.duoc.notariax.model.UsuarioDto
 import com.duoc.notariax.repository.UsuarioRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class UsuarioViewModel (private val repository: UsuarioRepository) : ViewModel() {
-    // Expresiones regualres
-
+class UsuarioViewModel () : ViewModel() {
+    private val repository = UsuarioRepository();
 
     // Variables
     var nombreCompleto = MutableStateFlow("")
@@ -60,20 +60,6 @@ class UsuarioViewModel (private val repository: UsuarioRepository) : ViewModel()
     }
 
     private fun validarRut(): Boolean {
-        /*return when {
-            rut.value.isBlank() -> {
-                errorRut.value = "El RUT es obligatorio"
-                false
-            }
-            !rutRegex.matches(rut.value) -> {
-                errorRut.value = "Formato inválido (ej: 12.345.678-k)"
-                false
-            }
-            else -> {
-                errorRut.value = ""
-                true
-            }
-        }*/
 
         if(repository.validarVacioRut(rut.value)){
             errorRut.value = "El RUT es obligatorio"
@@ -88,20 +74,6 @@ class UsuarioViewModel (private val repository: UsuarioRepository) : ViewModel()
     }
 
     private fun validarEmail(): Boolean {
-        /*return when {
-            email.value.isBlank() -> {
-                errorEmail.value = "El email es obligatorio"
-                false
-            }
-            !emailRegex.matches(email.value) -> {
-                errorEmail.value = "Formato de email inválido"
-                false
-            }
-            else -> {
-                errorEmail.value = ""
-                true
-            }
-        }*/
 
         if(repository.validarVacioEmail(email.value)){
             errorEmail.value = "El email es obligatorio"
@@ -116,13 +88,6 @@ class UsuarioViewModel (private val repository: UsuarioRepository) : ViewModel()
     }
 
     private fun validarContrasena(): Boolean {
-        /*return if (contrasena.value.isBlank()) {
-            errorContrasena.value = "La contraseña es obligatoria"
-            false
-        } else {
-            errorContrasena.value = ""
-            true
-        }*/
 
         if(repository.validarVacioContrasena(contrasena.value)){
             errorContrasena.value = "La contraseña es obligatoria"
@@ -134,20 +99,6 @@ class UsuarioViewModel (private val repository: UsuarioRepository) : ViewModel()
     }
 
     private fun validarContrasenaRepetida(): Boolean {
-        /*return when {
-            contrasenaRepetida.value.isBlank() -> {
-                errorContrasenaRepetida.value = "Repetir la contraseña es obligatorio"
-                false
-            }
-            contrasena.value != contrasenaRepetida.value -> {
-                errorContrasenaRepetida.value = "Las contraseñas no coinciden"
-                false
-            }
-            else -> {
-                errorContrasenaRepetida.value = ""
-                true
-            }
-        }*/
 
         if(repository.validarVacionContrasenaRepetida(contrasenaRepetida.value)){
             errorContrasenaRepetida.value = "Repetir la contraseña es obligatorio"
@@ -161,7 +112,7 @@ class UsuarioViewModel (private val repository: UsuarioRepository) : ViewModel()
         }
     }
 
-    fun crearUsuario(usuario: Usuario){
+    fun crearUsuario(usuario: UsuarioDto){
 
         val esValidoNombre = validarNombre()
         val esValidoRut = validarRut()
@@ -175,7 +126,7 @@ class UsuarioViewModel (private val repository: UsuarioRepository) : ViewModel()
         if (esFormularioValido) {
             registroExito.value = true
             viewModelScope.launch {
-                repository.insert(usuario)
+                repository.crearUsuario(usuario)
                 limpiarInputs()
                 limpiarErrores()
             }
