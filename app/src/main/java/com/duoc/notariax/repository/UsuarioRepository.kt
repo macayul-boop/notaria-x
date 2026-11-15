@@ -31,6 +31,10 @@ class UsuarioRepository() {
         return RetrofitInstance.api.login(request);
     }
 
+    suspend fun obtenerUsuario(idUsuario: Int) : UsuarioDto{
+        return RetrofitInstance.api.obtenerUsuario(idUsuario);
+    }
+
     // NOMBRE
     fun validarNombre(nombreCompleto: String): Boolean {
         return if (nombreCompleto.isBlank()) {
