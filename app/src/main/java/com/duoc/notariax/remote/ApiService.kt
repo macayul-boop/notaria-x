@@ -1,6 +1,7 @@
 package com.duoc.notariax.remote
 
 import com.duoc.notariax.model.LoginRequest
+import com.duoc.notariax.model.TramiteDto
 import com.duoc.notariax.model.Usuario
 import com.duoc.notariax.model.UsuarioDto
 import retrofit2.http.Body
@@ -18,5 +19,7 @@ interface ApiService {
     @GET("usuarios/{usuarios_id}")
     suspend fun obtenerUsuario(@Path("usuarios_id") id: Int) : UsuarioDto
 
+    @GET("tramites")
+    suspend fun obtenerTramites() : List<TramiteDto>
 
 }

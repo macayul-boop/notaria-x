@@ -1,6 +1,8 @@
 package com.duoc.notariax.repository
 
 import com.duoc.notariax.model.Tramite
+import com.duoc.notariax.model.TramiteDto
+import com.duoc.notariax.remote.RetrofitInstance
 
 class TramiteRepository {
 
@@ -33,4 +35,7 @@ class TramiteRepository {
         return listaTramite.find { it.id == idTramite }
     }
 
+    suspend fun obtenerTramites(): List<TramiteDto>{
+        return RetrofitInstance.api.obtenerTramites();
+    }
 }
