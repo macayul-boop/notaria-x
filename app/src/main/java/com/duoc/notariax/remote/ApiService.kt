@@ -2,7 +2,7 @@ package com.duoc.notariax.remote
 
 import com.duoc.notariax.model.LoginRequest
 import com.duoc.notariax.model.TramiteDto
-import com.duoc.notariax.model.Usuario
+import com.duoc.notariax.model.TramitesUsuariosDto
 import com.duoc.notariax.model.UsuarioDto
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -22,4 +22,9 @@ interface ApiService {
     @GET("tramites")
     suspend fun obtenerTramites() : List<TramiteDto>
 
+    @GET("tramites/{tramites_id}")
+    suspend fun obtenerTramite(@Path("tramites_id") id: Int) : TramiteDto
+
+    @POST("tramites_usuarios")
+    suspend fun crearTramiteUsuario(@Body tramite: TramitesUsuariosDto)
 }

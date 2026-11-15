@@ -38,4 +38,8 @@ class TramiteRepository {
     suspend fun obtenerTramites(): List<TramiteDto>{
         return RetrofitInstance.api.obtenerTramites();
     }
+
+    suspend fun obtenerTramite(idTramite: Int): TramiteDto {
+        return RetrofitInstance.api.obtenerTramite(idTramite)
+    }
 }

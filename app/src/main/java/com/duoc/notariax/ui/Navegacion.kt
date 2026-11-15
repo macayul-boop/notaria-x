@@ -4,8 +4,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -102,7 +105,20 @@ fun Navegacion(
                 )
             ) {
 
-                val viewModel: DetalleTramiteViewModel = viewModel()
+                val viewModel: DetalleTramiteViewModel = viewModel(
+                    factory = viewModelFactory {
+                        initializer {
+                            // 1. Creamos el SavedStateHandle para que el ViewModel reciba los argumentos de la ruta
+                            val savedStateHandle = createSavedStateHandle()
+
+                            // 2. Instanciamos el ViewModel pasándole ambos parámetros
+                            DetalleTramiteViewModel(
+                                savedStateHandle = savedStateHandle,
+                                sessionManager = sessionManager // <-- Aquí pasas tu instancia
+                            )
+                        }
+                    }
+                )
 
                 DetalleTramite(
                     onRegresar = {
@@ -111,7 +127,7 @@ fun Navegacion(
                     onTerminar = {
                         navController.navigate("inicio")
                     },
-                    viewModel
+                    viewmodel = viewModel
                 )
             }
 

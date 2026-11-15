@@ -57,7 +57,7 @@ fun DetalleTramite(
     viewmodel: DetalleTramiteViewModel
 ){
 
-    val tramite = viewmodel.tramite
+    val tramite by viewmodel.tramite.collectAsState()
     val listaArchivos by viewmodel.archivos.collectAsState()
     val esValido by viewmodel.esvalido.collectAsState()
     val erroArchivo by viewmodel.errorArchivo.collectAsState()
@@ -103,7 +103,7 @@ fun DetalleTramite(
                     .fillMaxWidth()
             ) {
                 Text(
-                    text = tramite.nombre,
+                    text = tramite!!.nombre,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = mostaza
@@ -111,33 +111,18 @@ fun DetalleTramite(
 
                 Spacer(Modifier.height(10.dp))
 
-                Text(text = tramite.descripcion, color = mostaza)
+                Text(text = tramite!!.descripcion, color = mostaza)
 
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp)
-                ) {
+                Spacer(Modifier.height(10.dp))
+                Text(text = "Documentos requeridos", fontSize = 18.sp, color = mostaza, fontWeight = FontWeight.SemiBold)
+                Spacer(Modifier.height(8.dp))
 
-                    Spacer(Modifier.height(10.dp))
-                    Text(text = "Documentos requeridos", fontSize = 18.sp, color = mostaza, fontWeight = FontWeight.SemiBold)
-                    Spacer(Modifier.height(8.dp))
+                Text(text = tramite!!.documentos, fontSize = 16.sp, color = mostaza)
 
-                    tramite.documentosRequeridos.forEach { documento ->
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(vertical = 4.dp, horizontal = 8.dp)
-                        ) {
-                            Text(text = "• ", fontSize = 18.sp, color = mostaza)
-                            Text(text = documento, fontSize = 16.sp, color = mostaza)
-                        }
-                    }
-                }
             }
 
             Column() {
-                Spacer(Modifier.height(10.dp))
+                Spacer(Modifier.height(30.dp))
                 OutlinedButton(
                     onClick = {selectorLauncherMúltiple.launch("*/*")},
                     border = BorderStroke(2.dp, mostaza),
