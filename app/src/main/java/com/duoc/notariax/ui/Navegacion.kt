@@ -40,7 +40,7 @@ fun Navegacion(
     val viewModelInicioSesion by lazy { InicioSesionViewModel(sessionManager) }
     val viewModelSeleccionarTramite by lazy { SeleccionarTramiteViewModel() }
     val viewModelInicio by lazy { InicioViewModel(sessionManager) }
-    val viewModelTramites by lazy { TramitesViewModel() }
+    val viewModelTramites by lazy { TramitesViewModel(sessionManager) }
     val viewModelPerfil by lazy { PerfilViewModel(sessionManager) }
     val viewModelEditarPerfil by lazy { EditarPerfilViewModel(sessionManager)}
 

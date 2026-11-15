@@ -35,6 +35,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.duoc.notariax.model.EstadoTramitesUsuarios
 import com.duoc.notariax.ui.theme.cafeOscuro
 import com.duoc.notariax.ui.theme.cafeOscuroClaro
 import com.duoc.notariax.ui.theme.mostaza
@@ -83,6 +84,11 @@ fun Tramites(
         ){
             items(listaTramites){ tramite ->
 
+                val estado = when(tramite.estado){
+                    EstadoTramitesUsuarios.abierto -> "Abierto"
+                    EstadoTramitesUsuarios.finalizado -> "Finalizado"
+                }
+
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -99,16 +105,16 @@ fun Tramites(
                                 .fillMaxWidth()
                                 .weight(0.7f)
                         ) {
-                            Row() {
+                            Column() {
                                 Text(
-                                    text = tramite.tramite.nombre,
+                                    text = tramite._tramite!!.nombre,
                                     fontSize = 15.sp,
                                     fontWeight = FontWeight.SemiBold,
                                     color = mostaza
                                 )
-                                Spacer(modifier = Modifier.width(15.dp))
+                                Spacer(modifier = Modifier.width(10.dp))
                                 Text(
-                                    text = tramite.progresoTramite.fechaFormateada,
+                                    text = tramite.obtenerFechaFormateada(),
                                     fontSize = 15.sp,
                                     fontWeight = FontWeight.Thin,
                                     color = mostaza
@@ -116,7 +122,7 @@ fun Tramites(
                             }
                             Spacer(modifier = Modifier.height(10.dp))
                             Text(
-                                text = tramite.progresoTramite.estado.nombreDisplay,
+                                text = estado,
                                 color = Color.White,
                                 modifier = Modifier
                                     .background(
@@ -133,7 +139,7 @@ fun Tramites(
                                 .weight(0.3f)
                         ) {
                             Button(
-                                onClick = {nagevacion.navigate("progreso_tramite/${tramite.progresoTramite.id}")},
+                                onClick = {nagevacion.navigate("progreso_tramite/${tramite.id}")},
                                 colors = ButtonDefaults.buttonColors(
                                     containerColor = mostaza,
                                     contentColor = Color.White

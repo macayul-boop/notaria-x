@@ -27,4 +27,7 @@ interface ApiService {
 
     @POST("tramites_usuarios")
     suspend fun crearTramiteUsuario(@Body tramite: TramitesUsuariosDto)
+
+    @GET("tramites_usuarios/usuario/{usuario_id}")
+    suspend fun obtenerTramiteUsuarioPorId(@Path("usuario_id") id: Int) : List<TramitesUsuariosDto>
 }

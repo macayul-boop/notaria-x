@@ -9,4 +9,7 @@ class TramitesUsuariosRepository {
         return RetrofitInstance.api.crearTramiteUsuario(request)
     }
 
+    suspend fun obtenerTramiteUsuarioPorId(idUsuario: Int): List<TramitesUsuariosDto>{
+        return RetrofitInstance.api.obtenerTramiteUsuarioPorId(idUsuario);
+    }
 }
