@@ -55,9 +55,7 @@ fun Navegacion(
                 onIrRegistro = {
                     navController.navigate("registro")
                 },
-                onIrInicio = {
-                    navController.navigate("inicio")
-                }
+                navController
             )
         }
 
@@ -165,6 +163,15 @@ fun Navegacion(
                 viewModelEditarPerfil,
                 navController
 
+            )
+        }
+
+        composable(
+            "inicio_notario"
+        ) {
+            inicioNotario(
+                navController = navController,
+                sessionManager = sessionManager
             )
         }
 

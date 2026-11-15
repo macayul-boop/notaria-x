@@ -12,7 +12,7 @@ class SessionManager(context: Context) {
         private const val llave_id = "id_usuario_activo"
     }
 
-    fun guardarSesion(id: Int) {
+    fun guardarSesion(id: Int?) {
         val editor = preferences.edit()
         editor.putString(llave_id, id.toString())
         editor.apply()

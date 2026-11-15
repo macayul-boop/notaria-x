@@ -41,7 +41,9 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.duoc.notariax.R
+import com.duoc.notariax.model.TipoUsuario
 import com.duoc.notariax.model.Usuario
 import com.duoc.notariax.viewmodel.InicioSesionViewModel
 
@@ -49,12 +51,13 @@ import com.duoc.notariax.viewmodel.InicioSesionViewModel
 fun InicioSesion(
     viewModel: InicioSesionViewModel,
     onIrRegistro: () -> Unit,
-    onIrInicio: () -> Unit
+    navController: NavController
 ){
 
     val email by viewModel.email.collectAsState()
     val contrasena by viewModel.contrasena.collectAsState()
     val loginExito by viewModel.exitoLogin.collectAsState()
+    val usuario by viewModel.usuario.collectAsState()
 
     val errorEmail by viewModel.errorEmail.collectAsState()
     val errorContrasena by viewModel.errorContrasena.collectAsState()
@@ -64,7 +67,13 @@ fun InicioSesion(
 
     LaunchedEffect(loginExito) {
         if (loginExito) {
-            onIrInicio()
+
+            if(usuario?.tipo_usuario?.equals(TipoUsuario.cliente) ?: false){
+                navController.navigate("inicio")
+            }else if(usuario?.tipo_usuario?.equals(TipoUsuario.notario) ?: false){
+                navController.navigate("inicio_notario")
+            }
+
             viewModel.exitoLogin.value = false;
         }
     }
@@ -156,7 +165,7 @@ fun InicioSesion(
             )
         )
 
-        Text(text = errorLogin)
+        Text(text = errorLogin, color = Color.Red)
         Spacer(modifier = Modifier.height(25.dp))
 
         Button(

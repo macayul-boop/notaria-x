@@ -1,5 +1,6 @@
 package com.duoc.notariax.repository
 
+import com.duoc.notariax.model.LoginRequest
 import com.duoc.notariax.model.Usuario
 import com.duoc.notariax.model.UsuarioDao
 import com.duoc.notariax.model.UsuarioDto
@@ -24,6 +25,10 @@ class UsuarioRepository() {
     // Funciones nuevas API
     suspend fun crearUsuario(usuario: UsuarioDto): UsuarioDto{
         return RetrofitInstance.api.crearUsuario(usuario)
+    }
+
+    suspend fun login(request: LoginRequest) : UsuarioDto{
+        return RetrofitInstance.api.login(request);
     }
 
     // NOMBRE
