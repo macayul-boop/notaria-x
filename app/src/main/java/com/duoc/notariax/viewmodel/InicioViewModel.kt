@@ -17,6 +17,7 @@ class InicioViewModel(
     private val sessionManager: SessionManager
 ): ViewModel() {
 
+    private val repositoryUsuario = UsuarioRepository()
     private val repositoryProgresoTramite = ProgresoTramiteRepository()
 
     private val idUsuario: String? get() = sessionManager.obtenerIdSesion();
@@ -29,7 +30,7 @@ class InicioViewModel(
 
     init {
         obtenerUsuario()
-        obtenerTramites()
+        //obtenerTramites()
     }
 
     private fun obtenerUsuario(){
@@ -37,8 +38,12 @@ class InicioViewModel(
             if(idUsuario != null) {
                 val idActual = idUsuario
                 if (idActual != null) {
-                    //val resultado = repository.getUsuario(idActual.toInt())
-                    //_nombreUsuario.value = resultado?.nombreCompleto ?: "Desconocido/a"
+                    try {
+                        val resultado = repositoryUsuario.obtenerUsuario(idActual.toInt())
+                        _nombreUsuario.value = resultado?.nombre ?: "Desconocido/a"
+                    }catch (e: Exception){
+                        print(e)
+                    }
                 }
             }
         }
