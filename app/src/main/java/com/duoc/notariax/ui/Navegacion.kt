@@ -24,6 +24,7 @@ import com.duoc.notariax.viewmodel.PerfilViewModel
 import com.duoc.notariax.viewmodel.EditarPerfilViewModel
 import com.duoc.notariax.viewmodel.InicioNotarioViewModel
 import com.duoc.notariax.viewmodel.NavegacionViewModel
+import com.duoc.notariax.viewmodel.ProgresoTramiteNotarioViewlModel
 import com.duoc.notariax.viewmodel.ProgresoTramiteViewModel
 import com.duoc.notariax.viewmodel.SeleccionarTramiteViewModel
 import com.duoc.notariax.viewmodel.TomarTramiteViewlModel
@@ -234,6 +235,24 @@ fun Navegacion(
                     },
                     navController
                 )
+            }
+
+            composable(
+                "progreso_tramite_notario/{progresoTramiteId}",
+                arguments = listOf(
+                    navArgument("progresoTramiteId") { type = NavType.StringType }
+                )
+            ){
+
+                val viewModel: ProgresoTramiteNotarioViewlModel = viewModel()
+
+                ProgresoTramiteNotario(
+                    viewModel,
+                    onRegresar = {
+                        navController.navigate("tramites_notario")
+                    }
+                )
+
             }
 
         }

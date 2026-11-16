@@ -103,21 +103,21 @@ fun LineaDeTiempo(
             )
         ) {
             Column(modifier = Modifier.padding(12.dp)) {
-                Row(
+                Column(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
+                    //horizontalArrangement = Arrangement.SpaceBetween,
+                    //verticalAlignment = Alignment.CenterVertically
                 ) {
+                    Text(
+                        text = evento.obtenerFechaFormateada(),
+                        fontSize = 11.sp,
+                        color = Color.Gray
+                    )
                     Text(
                         text = evento.titulo,
                         fontWeight = FontWeight.Bold,
                         fontSize = 14.sp,
                         color = Color.White
-                    )
-                    Text(
-                        text = evento.obtenerFechaFormateada(),
-                        fontSize = 11.sp,
-                        color = Color.Gray
                     )
                 }
 

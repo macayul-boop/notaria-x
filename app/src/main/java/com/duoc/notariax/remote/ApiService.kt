@@ -1,5 +1,7 @@
 package com.duoc.notariax.remote
 
+import com.duoc.notariax.model.CambiarEstadoRequest
+import com.duoc.notariax.model.HistorialTramiteRequest
 import com.duoc.notariax.model.LoginRequest
 import com.duoc.notariax.model.TomarTramiteRequest
 import com.duoc.notariax.model.TramiteDto
@@ -44,4 +46,10 @@ interface ApiService {
         @Path("tramites_usuarios_id") id: Int,
         @Body request: TomarTramiteRequest
     )
+
+    @POST("historial_tramites")
+    suspend fun crearEvento(@Body request: HistorialTramiteRequest)
+
+    @PATCH("tramites_usuarios/{tramites_usuarios_id}/estado")
+    suspend fun cambiarEstado(@Path("tramites_usuarios_id") id: Int, @Body request: CambiarEstadoRequest)
 }
