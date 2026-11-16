@@ -83,7 +83,7 @@ fun inicioNotario(
         Spacer(modifier = Modifier.height(20.dp))
 
         Button(
-            onClick = {},
+            onClick = { navController.navigate("tramites_notario") },
             colors = ButtonDefaults.buttonColors(
                 containerColor = mostaza,
                 contentColor = Color.White
