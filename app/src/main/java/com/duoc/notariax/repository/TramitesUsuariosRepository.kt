@@ -1,5 +1,6 @@
 package com.duoc.notariax.repository
 
+import com.duoc.notariax.model.TomarTramiteRequest
 import com.duoc.notariax.model.TramitesUsuariosDto
 import com.duoc.notariax.remote.RetrofitInstance
 
@@ -15,5 +16,13 @@ class TramitesUsuariosRepository {
 
     suspend fun obtenerTramiteUsuarioPorId(idTramite: Int): TramitesUsuariosDto{
         return RetrofitInstance.api.obtenerTramitePorId(idTramite)
+    }
+
+    suspend fun obtenerTramitesSinNotario(): List<TramitesUsuariosDto>{
+        return RetrofitInstance.api.obtenerTramitesSinNotario();
+    }
+
+    suspend fun tomarTramite(idTramiteUsuario: Int, request: TomarTramiteRequest){
+        return RetrofitInstance.api.tomarTramite(idTramiteUsuario, request);
     }
 }

@@ -26,6 +26,7 @@ import com.duoc.notariax.viewmodel.InicioNotarioViewModel
 import com.duoc.notariax.viewmodel.NavegacionViewModel
 import com.duoc.notariax.viewmodel.ProgresoTramiteViewModel
 import com.duoc.notariax.viewmodel.SeleccionarTramiteViewModel
+import com.duoc.notariax.viewmodel.TomarTramiteViewlModel
 import com.duoc.notariax.viewmodel.TramitesViewModel
 import com.duoc.notariax.viewmodel.UsuarioViewModel
 import kotlinx.coroutines.launch
@@ -45,6 +46,7 @@ fun Navegacion(
     val viewModelPerfil by lazy { PerfilViewModel(sessionManager) }
     val viewModelEditarPerfil by lazy { EditarPerfilViewModel(sessionManager)}
     val viewModelInicioNotario by lazy { InicioNotarioViewModel(sessionManager) }
+    val viewModelTomarTramite by lazy { TomarTramiteViewlModel(sessionManager) }
 
     LaunchedEffect(Unit) {
         viewModel.escogerRuta()
@@ -209,6 +211,16 @@ fun Navegacion(
                 )
             }
 
+            composable (
+                "tomar_tramite"
+            ){
+                TomarTramite(
+                    viewModelTomarTramite,
+                    onRegresar = {
+                        navController.navigate("inicio_notario")
+                    }
+                )
+            }
 
         }
     }

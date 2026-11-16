@@ -79,9 +79,7 @@ fun Tramites(
 
         Spacer(modifier = Modifier.height(40.dp))
 
-        LazyColumn(
-
-        ){
+        LazyColumn(){
             items(listaTramites){ tramite ->
 
                 val estado = when(tramite.estado){

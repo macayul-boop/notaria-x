@@ -1,11 +1,13 @@
 package com.duoc.notariax.remote
 
 import com.duoc.notariax.model.LoginRequest
+import com.duoc.notariax.model.TomarTramiteRequest
 import com.duoc.notariax.model.TramiteDto
 import com.duoc.notariax.model.TramitesUsuariosDto
 import com.duoc.notariax.model.UsuarioDto
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
 
@@ -33,4 +35,13 @@ interface ApiService {
 
     @GET("tramites_usuarios/{tramites_usuarios_id}")
     suspend fun obtenerTramitePorId(@Path("tramites_usuarios_id") id: Int) : TramitesUsuariosDto
+
+    @GET("tramites_sin_notario")
+    suspend fun obtenerTramitesSinNotario(): List<TramitesUsuariosDto>
+
+    @PATCH("tramites_usuarios/{tramites_usuarios_id}/tomar")
+    suspend fun tomarTramite(
+        @Path("tramites_usuarios_id") id: Int,
+        @Body request: TomarTramiteRequest
+    )
 }
