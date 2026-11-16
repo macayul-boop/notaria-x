@@ -19,12 +19,17 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.HorizontalAlignmentLine
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.duoc.notariax.model.EstadoTramitesUsuarios
 import com.duoc.notariax.model.ProgresoTramite
 import com.duoc.notariax.ui.theme.cafeOscuro
 import com.duoc.notariax.ui.theme.cafeOscuroClaro
@@ -37,7 +42,8 @@ fun ProgresoTramite(
     onRegresar: () -> Unit
 ){
 
-    val progresoTramite = viewModel.pogresoConTramite
+    val tramiteUsuario by viewModel.tramiteUsuario.collectAsState()
+    val historial = tramiteUsuario?.historial ?: emptyList()
 
     Column(
         modifier = Modifier
@@ -59,29 +65,34 @@ fun ProgresoTramite(
 
         Spacer(Modifier.height(50.dp))
 
-        if(progresoTramite != null){
+        if(tramiteUsuario != null){
 
-            Row(
-                verticalAlignment = Alignment.CenterVertically
+            Column(
             ) {
                 Text(
-                    text = progresoTramite.tramite.nombre,
+                    text = tramiteUsuario!!._tramite?.nombre ?: "Cargando...",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = mostaza
                 )
-                Spacer(modifier = Modifier.width(15.dp))
+                Spacer(modifier = Modifier.height(15.dp))
                 Text(
-                    text = progresoTramite.progresoTramite.fechaFormateada,
+                    text = tramiteUsuario!!.obtenerFechaFormateada(),
                     fontSize = 15.sp,
                     fontWeight = FontWeight.Thin,
                     color = mostaza
                 )
             }
 
+            val estado: String = when(tramiteUsuario!!.estado){
+                EstadoTramitesUsuarios.abierto -> "Abierto"
+                EstadoTramitesUsuarios.finalizado -> "Finalizado"
+            }
+
+
             Spacer(modifier = Modifier.height(10.dp))
             Text(
-                text = progresoTramite.progresoTramite.estado.nombreDisplay,
+                text = estado,
                 color = Color.White,
                 modifier = Modifier
                     .background(
@@ -103,13 +114,17 @@ fun ProgresoTramite(
 
             Spacer(modifier = Modifier.height(30.dp))
 
-            LazyColumn() {
-                itemsIndexed(progresoTramite.progresoTramite.historial) { index, evento ->
-                    val esUltimo = index == progresoTramite.progresoTramite.historial.lastIndex
-                    LineaDeTiempo(
-                        evento = evento,
-                        esElUltimo = esUltimo
-                    )
+            if(historial.isEmpty()){
+                Text(text = "Aun no hay registros", color = mostaza)
+            }else{
+                LazyColumn() {
+                    itemsIndexed(historial) { index, evento ->
+                        val esUltimo = index == tramiteUsuario!!.historial?.lastIndex
+                        LineaDeTiempo(
+                            evento = evento,
+                            esElUltimo = esUltimo
+                        )
+                    }
                 }
             }
 

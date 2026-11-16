@@ -14,7 +14,7 @@ class TramitesUsuariosDto(
     val _cliente: UsuarioDto? = null,
     val _tramite: TramiteDto? = null,
     val _notario: UsuarioDto? = null,
-    val _historial: EventoHistorialDto? = null
+    val historial: List<EventoHistorialDto>? = null
 ) {
 
     fun obtenerFechaFormateada(): String {

@@ -13,6 +13,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Error
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -26,13 +31,30 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.duoc.notariax.model.EventoHistorial
+import com.duoc.notariax.model.EventoHistorialDto
 
 @Composable
 fun LineaDeTiempo(
-    evento: EventoHistorial,
+    evento: EventoHistorialDto,
     esElUltimo: Boolean
 ){
+
+    val color = when(evento.tipo){
+        "informativo" -> Color(0xFF2196F3)
+        "advertencia" -> Color(0xFFFFC107)
+        "finalizado" -> Color(0xFF4CAF50)
+        "rechazado" -> Color(0xFFF44336)
+        else -> Color(0xFFFF9800)
+    }
+
+    val icono = when(evento.tipo){
+        "informativo" -> Icons.Default.Info
+        "advertencia" -> Icons.Default.Warning
+        "finalizado" -> Icons.Default.CheckCircle
+        "rechazado" -> Icons.Default.Error
+        else -> Icons.Default.Info
+    }
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -48,11 +70,11 @@ fun LineaDeTiempo(
                 modifier = Modifier
                     .size(28.dp)
                     .clip(CircleShape)
-                    .background(evento.tipo.color),
+                    .background(color),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
-                    imageVector = evento.tipo.icono,
+                    imageVector = icono,
                     contentDescription = null,
                     tint = Color.White,
                     modifier = Modifier.size(16.dp)
@@ -93,7 +115,7 @@ fun LineaDeTiempo(
                         color = Color.White
                     )
                     Text(
-                        text = evento.fechaHora,
+                        text = evento.obtenerFechaFormateada(),
                         fontSize = 11.sp,
                         color = Color.Gray
                     )
@@ -108,13 +130,6 @@ fun LineaDeTiempo(
                 )
 
                 Spacer(modifier = Modifier.height(6.dp))
-
-                Text(
-                    text = "Por: ${evento.actor}",
-                    fontSize = 11.sp,
-                    fontWeight = FontWeight.Medium,
-                    color = Color.Gray
-                )
             }
         }
     }

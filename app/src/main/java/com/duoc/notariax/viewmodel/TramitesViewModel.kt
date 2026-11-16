@@ -31,7 +31,7 @@ class TramitesViewModel(
         viewModelScope.launch {
            if(idUsuario != null){
                try{
-                   _listaTramites.value = repositoryTramitesUsuarios.obtenerTramiteUsuarioPorId(idUsuario.toInt())
+                   _listaTramites.value = repositoryTramitesUsuarios.obtenerTramiteUsuarioPorIdUsuario(idUsuario.toInt())
                }catch (e: Exception){
                    print(e)
                }
