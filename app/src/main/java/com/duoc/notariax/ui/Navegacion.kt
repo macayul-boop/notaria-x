@@ -22,6 +22,7 @@ import com.duoc.notariax.viewmodel.InicioSesionViewModel
 import com.duoc.notariax.viewmodel.InicioViewModel
 import com.duoc.notariax.viewmodel.PerfilViewModel
 import com.duoc.notariax.viewmodel.EditarPerfilViewModel
+import com.duoc.notariax.viewmodel.InicioNotarioViewModel
 import com.duoc.notariax.viewmodel.NavegacionViewModel
 import com.duoc.notariax.viewmodel.ProgresoTramiteViewModel
 import com.duoc.notariax.viewmodel.SeleccionarTramiteViewModel
@@ -43,6 +44,7 @@ fun Navegacion(
     val viewModelTramites by lazy { TramitesViewModel(sessionManager) }
     val viewModelPerfil by lazy { PerfilViewModel(sessionManager) }
     val viewModelEditarPerfil by lazy { EditarPerfilViewModel(sessionManager)}
+    val viewModelInicioNotario by lazy { InicioNotarioViewModel(sessionManager) }
 
     LaunchedEffect(Unit) {
         viewModel.escogerRuta()
@@ -198,8 +200,12 @@ fun Navegacion(
                 "inicio_notario"
             ) {
                 inicioNotario(
+                    viewModel =  viewModelInicioNotario,
                     navController = navController,
-                    sessionManager = sessionManager
+                    onCerrarSesion = {
+                        navController.navigate("login")
+                        sessionManager.cerrarSesion()
+                    }
                 )
             }
 
