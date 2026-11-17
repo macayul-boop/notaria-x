@@ -4,8 +4,13 @@ import com.duoc.notariax.model.Tramite
 import com.duoc.notariax.model.TramiteDto
 import com.duoc.notariax.remote.RetrofitInstance
 
-class TramiteRepository {
+interface ITramiteRepository {
+    suspend fun obtenerTramites(): List<TramiteDto>
+    suspend fun obtenerTramite(idTramite: Int): TramiteDto
+}
+class TramiteRepository : ITramiteRepository {
 
+    // FUNCIONES QUE YA NO SE OCUPAN (LAS COSAS DE ABAJO NO PESCAR)
     private var listaTramite = listOf(
         Tramite(
             1,
@@ -34,12 +39,13 @@ class TramiteRepository {
     fun obtenerTramitePorId(idTramite: Int): Tramite? {
         return listaTramite.find { it.id == idTramite }
     }
+    // FUNCIONES QUE YA NO SE OCUPAN (LAS COSAS DE ARRIBA NO PESCAR)
 
-    suspend fun obtenerTramites(): List<TramiteDto>{
+    override suspend fun obtenerTramites(): List<TramiteDto>{
         return RetrofitInstance.api.obtenerTramites();
     }
 
-    suspend fun obtenerTramite(idTramite: Int): TramiteDto {
+    override suspend fun obtenerTramite(idTramite: Int): TramiteDto {
         return RetrofitInstance.api.obtenerTramite(idTramite)
     }
 }

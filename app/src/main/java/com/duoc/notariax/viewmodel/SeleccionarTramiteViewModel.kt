@@ -4,15 +4,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.duoc.notariax.model.Tramite
 import com.duoc.notariax.model.TramiteDto
+import com.duoc.notariax.repository.ITramiteRepository
 import com.duoc.notariax.repository.TramiteRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class SeleccionarTramiteViewModel() : ViewModel() {
+class SeleccionarTramiteViewModel(
+    private val repository: ITramiteRepository = TramiteRepository()
+) : ViewModel() {
 
-    private val repository = TramiteRepository()
     private val _listaTramites = MutableStateFlow<List<TramiteDto>>(emptyList())
     val listaTramites: StateFlow<List<TramiteDto>> = _listaTramites.asStateFlow()
 
