@@ -153,7 +153,7 @@ fun Perfil(
                     )
                     Spacer(modifier = Modifier.height(20.dp))
                     Text(
-                        text = "Contraseña: ${contrasena ?: "Cargando..."}",
+                        text = "Contraseña: **********",
                         fontSize = 20.sp,
                         color = mostaza
                     )
