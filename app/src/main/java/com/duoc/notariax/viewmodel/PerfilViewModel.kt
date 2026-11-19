@@ -34,14 +34,25 @@ class PerfilViewModel(
     }
 
     fun obtenerUsuario(){
+        val idUsuario = sessionManager.obtenerIdSesion()
+
         viewModelScope.launch {
-            if(idUsuario != null) {
-                //val resultado = repository.getUsuario(idUsuario.toInt())
-                //_nombreUsuario.value = resultado?.nombreCompleto ?: "Sin nombre"
-                //_rut.value = resultado?.rut ?: "Sin RUT"
-                //_email.value = resultado?.email ?: "Sin correo"
-                //_contraseña.value = resultado?.contrasena ?: "••••••••"
-            }
+                if (idUsuario != null) {
+                    try{
+                        val resultado = repository.obtenerUsuario(idUsuario.toInt())
+                        _nombreUsuario.value = resultado?.nombre ?: "Sin nombre"
+                        _rut.value = resultado?.rut ?: "Sin RUT"
+                        _email.value = resultado?.email ?: "Sin correo"
+                        _contraseña.value = resultado?.contrasena ?: "••••••••"
+                    }catch(e: Exception){
+                        _nombreUsuario.value =  "Error al cargar"
+                        _rut.value = "-"
+                        _email.value = "-"
+                        _contraseña.value = "-"
+                        e.printStackTrace()
+                    }
+                }
+
         }
     }
 
