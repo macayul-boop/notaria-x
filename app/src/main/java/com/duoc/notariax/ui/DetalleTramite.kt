@@ -1,6 +1,9 @@
 package com.duoc.notariax.ui
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.net.Uri
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
@@ -14,6 +17,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -33,7 +37,9 @@ import com.duoc.notariax.ui.theme.mostaza
 import com.duoc.notariax.viewmodel.DetalleTramiteViewModel
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.UploadFile
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
@@ -44,11 +50,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.core.content.ContextCompat
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import com.duoc.notariax.utils.crearUriImagenTemporal
 
 @Composable
 fun DetalleTramite(
@@ -56,17 +65,43 @@ fun DetalleTramite(
     onTerminar: () -> Unit,
     viewmodel: DetalleTramiteViewModel
 ){
-
+    val context = LocalContext.current
     val tramite by viewmodel.tramite.collectAsState()
     val listaArchivos by viewmodel.archivos.collectAsState()
     val esValido by viewmodel.esvalido.collectAsState()
     val erroArchivo by viewmodel.errorArchivo.collectAsState()
     var cargando by remember { mutableStateOf(false) }
 
-    val selectorLauncherMúltiple = rememberLauncherForActivityResult(
+    val selectorLauncherMultiple = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetMultipleContents()
     ) { uris: List<Uri> ->
         viewmodel.agregarArchivos(uris)
+    }
+
+    var uriFotoTemporal by remember { mutableStateOf<Uri?>(null) }
+
+    val camaraLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.TakePicture()
+    ) { exito: Boolean ->
+        if (exito && uriFotoTemporal != null) {
+            viewmodel.agregarArchivos(listOf(uriFotoTemporal!!))
+        }
+    }
+
+    val permisoCamaraLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { concedido: Boolean ->
+        if (concedido) {
+            val nuevaUri = crearUriImagenTemporal(context)
+            uriFotoTemporal = nuevaUri
+            camaraLauncher.launch(nuevaUri)
+        } else {
+            Toast.makeText(
+                context,
+                "Se requiere permiso de cámara para tomar fotos",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 
     LaunchedEffect(esValido) {
@@ -123,18 +158,65 @@ fun DetalleTramite(
 
             Column() {
                 Spacer(Modifier.height(30.dp))
-                OutlinedButton(
-                    onClick = {selectorLauncherMúltiple.launch("*/*")},
-                    border = BorderStroke(2.dp, mostaza),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color.Transparent,
-                        contentColor = mostaza
-                    ),
-                    shape = RoundedCornerShape(8.dp),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(height = 50.dp)
-                ){ Text(text = "Subir archivos") }
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    OutlinedButton(
+                        onClick = { selectorLauncherMultiple.launch("*/*") },
+                        border = BorderStroke(2.dp, mostaza),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color.Transparent,
+                            contentColor = mostaza
+                        ),
+                        shape = RoundedCornerShape(8.dp),
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(50.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.UploadFile,
+                            contentDescription = null,
+                            modifier = Modifier.size(18.dp)
+                        )
+                        Spacer(Modifier.width(6.dp))
+                        Text(text = "Archivos", maxLines = 1)
+                    }
+
+                    OutlinedButton(
+                        onClick = {
+                            val tienePermiso = ContextCompat.checkSelfPermission(
+                                context,
+                                Manifest.permission.CAMERA
+                            ) == PackageManager.PERMISSION_GRANTED
+
+                            if (tienePermiso) {
+                                val nuevaUri = crearUriImagenTemporal(context)
+                                uriFotoTemporal = nuevaUri
+                                camaraLauncher.launch(nuevaUri)
+                            } else {
+                                permisoCamaraLauncher.launch(Manifest.permission.CAMERA)
+                            }
+                        },
+                        border = BorderStroke(2.dp, mostaza),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color.Transparent,
+                            contentColor = mostaza
+                        ),
+                        shape = RoundedCornerShape(8.dp),
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(50.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.CameraAlt,
+                            contentDescription = null,
+                            modifier = Modifier.size(18.dp)
+                        )
+                        Spacer(Modifier.width(6.dp))
+                        Text(text = "Cámara", maxLines = 1)
+                    }
+                }
 
                 Spacer(modifier = Modifier.height(16.dp))
 
