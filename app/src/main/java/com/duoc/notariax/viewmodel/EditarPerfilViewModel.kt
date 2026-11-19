@@ -2,7 +2,9 @@ package com.duoc.notariax.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.duoc.notariax.model.Usuario
+import com.duoc.notariax.model.ActualizarUsuarioRequest
+import com.duoc.notariax.model.TipoUsuario
+import com.duoc.notariax.model.UsuarioDto
 import com.duoc.notariax.repository.UsuarioRepository
 import com.duoc.notariax.utils.SessionManager
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,13 +17,13 @@ class EditarPerfilViewModel (
 ) : ViewModel() {
 
     private val repository = UsuarioRepository();
-    private val idUsuario: String? = sessionManager.obtenerIdSesion();
     private val _nombreCompleto = MutableStateFlow("")
     private val _rut = MutableStateFlow("")
     private val _email = MutableStateFlow("")
     private val _contrasena = MutableStateFlow("")
     private val _contrasenaRepetida = MutableStateFlow("")
 
+    private var tipoUsuarioActual: TipoUsuario = TipoUsuario.cliente
 
 
     val nombreCompleto: StateFlow<String> = _nombreCompleto.asStateFlow()
@@ -93,18 +95,25 @@ class EditarPerfilViewModel (
     }
 
     fun obtenerUsuario(){
+
+        val idUsuario = sessionManager.obtenerIdSesion()
+
         viewModelScope.launch {
             if(idUsuario != null) {
-                //val resultado = repository.getUsuario(idUsuario.toInt())
-                //if(resultado !=null) {
-                //    _nombreCompleto.value = resultado.nombreCompleto
-                //    _rut.value = resultado.rut
-                //    _email.value = resultado.email
-                //    _contrasena.value = resultado.contrasena
-                //    _contrasenaRepetida.value=resultado.contrasena
+                try{
+                val resultado = repository.obtenerUsuario(idUsuario.toInt())
+                _nombreCompleto.value = resultado.nombre
+                _rut.value = resultado.rut
+                _email.value = resultado.email
+                _contrasena.value = ""
+                _contrasenaRepetida.value = ""
+                    tipoUsuarioActual = resultado.tipo_usuario
+                }catch(e: Exception){
+                    e.printStackTrace()
                 }
             }
         }
+    }
 
 
     private fun validarNombre(): Boolean{
@@ -144,23 +153,15 @@ class EditarPerfilViewModel (
     }
 
     private fun validarContrasena(): Boolean {
-        return if(repository.validarVacioContrasena(_contrasena.value)){
-            errorContrasena.value = "La contraseña es obligatoria"
-            false
-        }else{
-            errorContrasena.value = ""
-            true
-        }
+        errorContrasena.value = ""
+        return true
     }
 
     private fun validarContrasenaRepetida(): Boolean {
-        return if(repository.validarVacionContrasenaRepetida(_contrasenaRepetida.value)){
-            errorContrasenaRepetida.value = "Repetir la contraseña es obligatorio"
-            false
-        }else if(repository.validarCoincidenciaContrasena(_contrasena.value, _contrasenaRepetida.value)){
+        return if (_contrasena.value != _contrasenaRepetida.value) {
             errorContrasenaRepetida.value = "Las contraseñas no coinciden"
             false
-        }else{
+        } else {
             errorContrasenaRepetida.value = ""
             true
         }
@@ -180,17 +181,23 @@ class EditarPerfilViewModel (
 
     fun guardarPerfil(){
 
+        val idUsuario = sessionManager.obtenerIdSesion()
+
         if (idUsuario !=null) {
             viewModelScope.launch {
-                val usuarioEditado = Usuario(
-                    id = idUsuario.toInt(),
-                    nombreCompleto = _nombreCompleto.value,
-                    rut = _rut.value,
-                    email = _email.value,
-                    contrasena = _contrasena.value
-                )
-                //repository.update(usuarioEditado)
-                edicionExito.value=true
+                try {
+                    val request = ActualizarUsuarioRequest(
+                        nombre = _nombreCompleto.value,
+                        rut = _rut.value,
+                        email = _email.value,
+                        contrasena = _contrasena.value.takeIf { it.isNotBlank() },
+                        tipo_usuario = tipoUsuarioActual
+                    )
+                    repository.actualizarUsuario(idUsuario.toInt(), request)
+                    edicionExito.value = true
+                }catch(e: Exception){
+                    e.printStackTrace()
+                }
             }
         }
 

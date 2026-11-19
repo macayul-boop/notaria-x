@@ -1,5 +1,6 @@
 package com.duoc.notariax.remote
 
+import com.duoc.notariax.model.ActualizarUsuarioRequest
 import com.duoc.notariax.model.CambiarEstadoRequest
 import com.duoc.notariax.model.HistorialTramiteRequest
 import com.duoc.notariax.model.LoginRequest
@@ -22,6 +23,9 @@ interface ApiService {
 
     @GET("usuarios/{usuarios_id}")
     suspend fun obtenerUsuario(@Path("usuarios_id") id: Int) : UsuarioDto
+
+    @PATCH("usuarios/{usuarios_id}")
+    suspend fun actualizarUsuario(@Path("usuarios_id") id: Int, @Body request: ActualizarUsuarioRequest): UsuarioDto
 
     @GET("tramites")
     suspend fun obtenerTramites() : List<TramiteDto>
