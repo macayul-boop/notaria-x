@@ -4,8 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.duoc.notariax.model.ProgresoConTramite
 import com.duoc.notariax.model.ProgresoTramite
+import com.duoc.notariax.model.TramitesUsuariosDto
 import com.duoc.notariax.model.Usuario
 import com.duoc.notariax.repository.ProgresoTramiteRepository
+import com.duoc.notariax.repository.TramitesUsuariosRepository
 import com.duoc.notariax.repository.UsuarioRepository
 import com.duoc.notariax.utils.SessionManager
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,19 +20,19 @@ class InicioViewModel(
 ): ViewModel() {
 
     private val repositoryUsuario = UsuarioRepository()
-    private val repositoryProgresoTramite = ProgresoTramiteRepository()
+    private val repositoryTramite = TramitesUsuariosRepository()
 
     private val idUsuario: String? get() = sessionManager.obtenerIdSesion();
     private val _nombreUsuario = MutableStateFlow<String?>("Desconocido/a")
     val nombreUsuario: StateFlow<String?> = _nombreUsuario.asStateFlow()
 
-    private val _listaTramitesProgreso = MutableStateFlow<List<ProgresoConTramite>>(emptyList())
-    val listaTramitesProgreso: StateFlow<List<ProgresoConTramite>> = _listaTramitesProgreso.asStateFlow()
+    private val _listaTramitesProgreso = MutableStateFlow<List<TramitesUsuariosDto>>(emptyList())
+    val listaTramitesProgreso: StateFlow<List<TramitesUsuariosDto>> = _listaTramitesProgreso.asStateFlow()
 
 
     init {
         obtenerUsuario()
-        //obtenerTramites()
+        obtenerTramites()
     }
 
     fun obtenerUsuario(){
@@ -50,7 +52,19 @@ class InicioViewModel(
     }
 
     private fun obtenerTramites(){
-        _listaTramitesProgreso.value = repositoryProgresoTramite.obtenerVariosProgesoConTramite(2)
+        viewModelScope.launch {
+            if(idUsuario != null){
+                val idActual = idUsuario
+                if (idActual != null) {
+                    try {
+                        val resultado = repositoryTramite.obtenerTramiteUsuarioPorIdUsuario(idActual.toInt())
+                        _listaTramitesProgreso.value = resultado.takeLast(2)
+                    }catch (e: Exception){
+                        print(e)
+                    }
+                }
+            }
+        }
     }
 
 
