@@ -1,5 +1,6 @@
 package com.duoc.notariax.repository
 
+import com.duoc.notariax.model.ActualizarUsuarioRequest
 import com.duoc.notariax.model.LoginRequest
 import com.duoc.notariax.model.Usuario
 import com.duoc.notariax.model.UsuarioDao
@@ -33,6 +34,10 @@ class UsuarioRepository() {
 
     suspend fun obtenerUsuario(idUsuario: Int) : UsuarioDto{
         return RetrofitInstance.api.obtenerUsuario(idUsuario);
+    }
+
+    suspend fun actualizarUsuario(idUsuario: Int, request: ActualizarUsuarioRequest): UsuarioDto {
+        return RetrofitInstance.api.actualizarUsuario(idUsuario, request)
     }
 
     // NOMBRE

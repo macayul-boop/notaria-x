@@ -33,7 +33,7 @@ class InicioViewModel(
         //obtenerTramites()
     }
 
-    private fun obtenerUsuario(){
+    fun obtenerUsuario(){
         viewModelScope.launch {
             if(idUsuario != null) {
                 val idActual = idUsuario
