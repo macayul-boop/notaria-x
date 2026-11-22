@@ -159,7 +159,7 @@ fun TomarTramite(
 
                     }
                 }
-
+                Spacer(Modifier.height(15.dp))
             }
         }
     }
